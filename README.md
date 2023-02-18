@@ -25,7 +25,7 @@ Dockerfile, just called `Dockerfile` is the one that, when built as an image, al
 source code and compiles the UGen, copying it out into a `/bin` directory when it's finished.
 
 _The steps to build these Docker images are shown in `build.sh`._ You can run the script directly if
-you have bash available, or just run them yourself.
+you have bash available, or just run the individual steps yourself.
 
 To install the UGens, first, ssh into your norns and make sure you have created a directory
 called `~/.local/share/SuperCollider/Extensions/MySaw`. You can then quit the session and return to
