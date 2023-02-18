@@ -1,0 +1,22 @@
+# Dockerfile.cross-pi
+# docker buildx build -f Dockerfile.cross-pi --tag cross-pi .
+FROM cross-stretch
+
+# NOTE: This must be the same on the target host
+ENV RPI_SHA=f73fca0
+
+# MMAL/VCOS (https://github.com/raspberrypi/userland)
+RUN RPI_DIR=/raspberrypi && \
+  RPI_BUILD_DIR=$RPI_DIR/build/arm-linux/release && \
+  git clone --single-branch --branch master https://github.com/raspberrypi/userland.git $RPI_DIR && \
+  cd $RPI_DIR && \
+  git checkout $RPI_SHA && \
+  mkdir -p $RPI_BUILD_DIR && \
+  cd $RPI_BUILD_DIR && \
+  cmake -DCMAKE_TOOLCHAIN_FILE=../../../makefiles/cmake/toolchains/arm-linux-gnueabihf.cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    ../../.. && \
+  make -j `nproc` && \
+  make install DESTDIR=$CROSS_INSTALL_PREFIX/ && \
+  cd / && \
+  rm -rf $RPI_DIR
